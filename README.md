@@ -1,2 +1,2 @@
-# CosIng_database_finder
-EU cosmetics ingredient database engine (GUI, SQLite, CSV)
+# CosIng database finder
+EU cosmetics ingredient database engine.
