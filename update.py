@@ -4,17 +4,10 @@ import urllib.request
 import os
 from datetime import date
 from tkinter import *
-from tkinter import messagebox
 
 
 today = str(date.today())
 
-# def mb_info():
-#     answer = messagebox.askokcancel("update", "Last updating: "+Updating("testowa.db").last_updating()+
-#                                     "\nPresent database version: "+date()+
-#                                     "\nCurrent databases: "+Updating("testowa.db").present_db())
-#     if (answer):
-#         Updating("testowa.db").update()
 
 class Updating:
     def __init__(self, db):
@@ -47,9 +40,10 @@ class Updating:
             date_row = [row for idx, row in enumerate(csv_reader) if idx == 6]
             current_update = (str(date_row[0][1]))[-10:]
             self.cur.execute("UPDATE update_data SET Data = ?, Last = ?", (today, current_update))
-            
+
         # Close the csv file, commit changes, and close the connection
         csv_file.close()
+        self.csv_delete("db_update.csv")
         self.conn.commit()
 
     def present_db(self):
@@ -62,31 +56,24 @@ class Updating:
         row = self.cur.fetchall()
         return row[0][0]
 
+    def csv_delete(csv_name):
+        if os.path.exists(csv_name):
+            os.remove(csv_name)
+        else:
+            pass
+
     def __del__(self):
         self.conn.close()
 
+
 def date():
-    av_date = ""
     url = "http://ec.europa.eu/growth/tools-databases/cosing/pdf/COSING_Ingredients-Fragrance%20Inventory_v2.csv"
     urllib.request.urlretrieve(url, "date.csv")
 
     with open('date.csv', encoding="utf8") as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',')
-        # Print specific rows:
-        # interestingrows = [row for idx, row in enumerate(csv_reader) if idx in (6, 11)]
-        # Print one specific row:
         interestingrows = [row for idx, row in enumerate(csv_reader) if idx == 6]
         date = (str(interestingrows[0][1]))[-10:]
-
-    if os.path.exists("date.csv"):
-        os.remove("date.csv")
-    else:
-        pass
+    Updating.csv_delete("date.csv")
 
     return date
-
-# root = Tk()
-# 
-# b = Button(root, text='update', command=call)
-# b.pack()
-# root.mainloop()

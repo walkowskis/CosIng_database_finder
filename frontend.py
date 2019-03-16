@@ -66,7 +66,7 @@ class Window(object):
         try:
             index = self.list1.curselection()[0]
             self.selected_tuple = self.list1.get(index)
-            self.detail.delete(1.0,END)
+            self.detail.delete(1.0, END)
             self.detail.insert(END, self.selected_tuple[1]+'\n', 'big')
             self.detail.insert(END, 'CAS No: ', 'bold')
             self.detail.insert(END, Window.empty(self.selected_tuple[4])+'\n')
@@ -87,21 +87,11 @@ class Window(object):
             self.list1.insert(END, row)
 
     def update(self):
-        # if Updating(database_name).last_updating() == Updating(database_name).present_db():
-        #     claim = "\nApplication database is up-date."
-        # else:
-        #     claim = "\nA new version of the database is available, do you want to update?"
-        # answer = messagebox.askokcancel("update", "Last update date: " + Updating(database_name).last_updating() +
-        #                                 "\nAvailable database version: " + date() +
-        #                                 "\nApplication database version : " + Updating(database_name).present_db())
-        # print(claim)
-        # if answer:
-        #     Updating(database_name).update()
         if date() == Updating(database_name).present_db():
             answer = messagebox.showinfo("update", "Last update date: " + Updating(database_name).last_updating() +
-                                            "\nAvailable database version: " + date() +
-                                            "\nApplication database version : " + Updating(database_name).present_db() +
-                                            "\n\nApplication database is up-to-date.")
+                                         "\nAvailable database version: " + date() +
+                                         "\nApplication database version : " + Updating(database_name).present_db() +
+                                         "\n\nApplication database is up-to-date.")
         else:
             answer = messagebox.askokcancel("update", "Last update date: " + Updating(database_name).last_updating() +
                                             "\nAvailable database version: " + date() +
@@ -111,11 +101,6 @@ class Window(object):
                 Updating(database_name).update()
 
     def search_command(self):
-        # def empty(x):
-        #     if len(str(x)) == 0:
-        #         return "x"
-        #     else:
-        #         return x
         self.list1.delete(0, END)
         for row in database.search('%'+self.title_text.get()+'%'):
             self.list1.insert(END, row)
